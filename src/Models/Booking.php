@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rinvex\Bookings\Models;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
@@ -74,8 +75,6 @@ class Booking extends Model
     protected $fillable = [
         'bookable_id',
         'bookable_type',
-        'user_id',
-        'user_type',
         'starts_at',
         'ends_at',
         'price',
@@ -91,8 +90,6 @@ class Booking extends Model
     protected $casts = [
         'bookable_id' => 'integer',
         'bookable_type' => 'string',
-        'user_id' => 'integer',
-        'user_type' => 'string',
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'price' => 'float',
@@ -118,8 +115,6 @@ class Booking extends Model
     protected $rules = [
         'bookable_id' => 'required|integer',
         'bookable_type' => 'required|string',
-        'user_id' => 'required|integer',
-        'user_type' => 'required|string',
         'starts_at' => 'required|date',
         'ends_at' => 'required|date',
         'price' => 'required|numeric',
@@ -268,13 +263,13 @@ class Booking extends Model
     }
 
     /**
-     * Get the owning user.
+     * Get the owning users.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return \Illuminate\Database\Eloquent\Relations\MorpedByMany
      */
-    public function user(): MorphTo
+    public function users(): MorphedByMany
     {
-        return $this->morphTo();
+        return $this->morphedByMany('App\User','user',config('rinvex.bookings.tables.bookings_users'));
     }
 
     /**

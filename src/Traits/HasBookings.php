@@ -6,6 +6,7 @@ namespace Rinvex\Bookings\Traits;
 
 use Rinvex\Bookings\Models\Booking;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\morphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasBookings
@@ -13,26 +14,13 @@ trait HasBookings
     use BookingScopes;
 
     /**
-     * Define a polymorphic one-to-many relationship.
+     * Many users may have many bookings.
      *
-     * @param string $related
-     * @param string $name
-     * @param string $type
-     * @param string $id
-     * @param string $localKey
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\morphToMany
      */
-    abstract public function morphMany($related, $name, $type = null, $id = null, $localKey = null);
-
-    /**
-     * The user may have many bookings.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function bookings(): MorphMany
+    public function bookings(): morphToMany
     {
-        return $this->morphMany(config('rinvex.bookings.models.booking'), 'user');
+        return $this->morphToMany(config('rinvex.bookings.models.booking'), 'user',config('rinvex.bookings.tables.bookings_users'));
     }
 
     /**

@@ -9,6 +9,7 @@ return [
         'bookings' => 'bookings',
         'rates' => 'booking_rates',
         'prices' => 'booking_prices',
+	    'bookings_users' => 'bookings_users'
     ],
 
     // Bookings Models

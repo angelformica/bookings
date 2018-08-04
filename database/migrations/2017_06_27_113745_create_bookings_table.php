@@ -19,7 +19,6 @@ class CreateBookingsTable extends Migration
             // Columns
             $table->increments('id');
             $table->morphs('bookable');
-            $table->morphs('user');
             $table->string('currency', 3);
             $table->timestamp('starts_at')->useCurrent();
             $table->timestamp('ends_at')->useCurrent();
@@ -28,6 +27,14 @@ class CreateBookingsTable extends Migration
             $table->timestamp('cancelled_at')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+        });
+        Schema::create(config('rinvex.bookings.tables.bookings_users'), function (Blueprint $table) {
+        	$table->increments('id');
+        	$table->integer('booking_id')->unsigned();
+        	$table->morphs('user');
+        	$table->timestamps();
+
+        	$table->foreign('booking_id')->references('id')->on('bookings');
         });
     }
 
